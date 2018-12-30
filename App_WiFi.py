@@ -15,18 +15,16 @@ class App_WiFi(App):
 
     def FirstDraw(self, screen):
         #Draw the background
-        background = pygame.Surface(screen.get_size())
-        background.fill((0, 0, 0))
-        screen.blit(background, (0, 0))
-
+        self.DrawBackground(screen)
         super(App_WiFi, self).FirstDraw(screen)
 
     def Draw(self, screen):
-        worked = super(App_WiFi, self).Draw(screen)
+        worked = False
         if self.dirty: #redraw
             self.FirstDraw(screen)
             self.dirty = False
             worked = True
+        worked |= super(App_WiFi, self).Draw(screen)
         return worked
 
     def EventLoop(self, events):
@@ -47,13 +45,16 @@ class App_WiFi(App):
             if button.NAME.startswith('btnNetwork'):
                 self.Buttons.remove(button)
         self.networks = sorted(list(Cell.all('wlan0')), reverse=True, key=lambda x: x.signal)
-        for i in range(len(self.networks)):
+        numNetworks = len(self.networks)
+        for i in range(numNetworks):
             net = self.networks[i]
             button = utils.Button('btnNetwork{}'.format(i), (50, 100+i*50), (250, 40), COLORS.BLUE, '{}'.format(net.ssid), COLORS.WHITE, self.Connect, 30)
             self.Buttons.append(button)
             print('{} - {} - {} - {}'.format(i, net.ssid, net.quality, net.encrypted))
         self.dirty = True
         print('Scan complete')
+        popup = utils.TextPopup('{} networks found!'.format(numNetworks), 10, 48)
+        self.PopUps.append(popup)
             
 
     def Connect(self, btnID):

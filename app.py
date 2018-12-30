@@ -23,6 +23,11 @@ class App(object):
         self.PopUps.remove(popup)
     return worked
     
+  def DrawBackground(self, screen, color = (0, 0, 0)):
+    background = pygame.Surface(screen.get_size())
+    background.fill(color)
+    screen.blit(background, (0, 0))
+    
   def MouseClick(self, mousePos):
     for button in self.Buttons:
       button.Check(mousePos)

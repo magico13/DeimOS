@@ -3,6 +3,7 @@ import FPS_control
 from app import App
 from App_WiFi import App_WiFi
 from App_Music import App_Music
+from App_Engine import App_Engine
 
 import utils
 from utils import COLORS
@@ -114,8 +115,9 @@ class App_Launcher(App):
         super(App_Launcher, self).__init__()
         FPS_control.Default()
         self.Apps = []
-        self.Apps.append(AppIcon("Music", App_Music, COLORS.RED))
-        self.Apps.append(AppIcon("WiFi", App_WiFi, COLORS.BLUE))
+        self.Apps.append(AppIcon("Engine", App_Engine, COLORS.RED))
+        self.Apps.append(AppIcon("Music", App_Music, COLORS.BLUE))
+        self.Apps.append(AppIcon("WiFi", App_WiFi, COLORS.CYAN))
                 
     def FirstDraw(self, screen):
         background = pygame.Surface(screen.get_size())
@@ -124,10 +126,10 @@ class App_Launcher(App):
         screen.blit(background, (0,0))
         
         i=0
-        W = CORE.Width/(2*self.COLS+1)
-        H = CORE.Height/(2*self.ROWS+1)
+        W = CORE.Width/self.COLS
+        H = (CORE.Height-CORE.BarHeight)/self.ROWS
         for app in self.Apps:
-            app.Draw(screen, (2*W*(i%self.COLS)+W, 2*H*(i/self.COLS)+H))
+            app.Draw(screen, (W*(i%self.COLS)+(W-app.BTN.SIZE[0])/2, H*(i/self.COLS)+(H-app.BTN.SIZE[1])/2))
             i += 1
         
         super(App_Launcher, self).FirstDraw(screen)
@@ -142,7 +144,7 @@ class AppIcon():
         self.NAME = name
         self.APP = appClass
         self.COLOR = color
-        self.BTN = utils.Button("btn"+name, (0, 0), (128, 96), self.COLOR, self.NAME, COLORS.WHITE, self.Activate)
+        self.BTN = utils.Button("btn"+name, (0, 0), (224, 176), self.COLOR, self.NAME, COLORS.WHITE, self.Activate)
         self.BTN.TXTSIZE = 36
     
     def Draw(self, screen, pos):

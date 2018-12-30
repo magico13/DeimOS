@@ -115,7 +115,6 @@ class TextPopup(Text):
         self.FONT = pygame.font.Font(None, self.HT)
         self.VISIBLE = True
         self.POS = (0, 0)
-        self.Center((160, 120))
         self.TIME = timeout
         self.COUNTER = 0
         
@@ -123,6 +122,8 @@ class TextPopup(Text):
     def Activate(self, surf):
         self.BACKUP = surf.copy()
         surf.fill(self.BACKCOLOR)
+        size = surf.get_size()
+        self.Center((size[0]/2, size[1]/2))
         super(TextPopup, self).Draw(surf)
         self.COUNTER = 0
         self.VISIBLE = True
