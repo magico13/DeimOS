@@ -1,0 +1,188 @@
+{
+  "buttons": [
+    {
+      "textSize": 36, 
+      "name": "btnSelect", 
+      "color": [
+        0, 
+        255, 
+        255
+      ], 
+      "text": "Select", 
+      "callback": "Select", 
+      "position": [
+        450, 
+        390
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        100, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnUp", 
+      "color": [
+        255, 
+        255, 
+        0
+      ], 
+      "text": "Up", 
+      "callback": "GoUp", 
+      "position": [
+        10, 
+        10
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        100, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnHidden", 
+      "color": [
+        0, 
+        0, 
+        255
+      ], 
+      "text": "Hidden", 
+      "callback": "ToggleHidden", 
+      "position": [
+        10, 
+        390
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        100, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnFiles", 
+      "color": [
+        255, 
+        255, 
+        0
+      ], 
+      "text": "Files", 
+      "callback": "ToggleFiles", 
+      "position": [
+        690, 
+        390
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        100, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnPPlus", 
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": ">", 
+      "callback": "PageChange", 
+      "position": [
+        750, 
+        76
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        40, 
+        304
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnPMinus", 
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "<", 
+      "callback": "PageChange", 
+      "position": [
+        10, 
+        76
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        40, 
+        304
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnCancel", 
+      "color": [
+        255, 
+        0, 
+        0
+      ], 
+      "text": "Cancel", 
+      "callback": "None", 
+      "position": [
+        250, 
+        390
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        100, 
+        40
+      ]
+    }
+  ], 
+  "texts": [
+    {
+      "color": [
+        0, 
+        255, 
+        0
+      ], 
+      "text": "/this/is/a/path", 
+      "height": 30, 
+      "name": "txtPath", 
+      "position": [
+        115, 
+        18
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "buttons": [
+    {
+      "callback": "Scan",
+      "color": [
+        255,
+        255,
+        0
+      ],
+      "text": "SCAN",
+      "name": "btnScan",
+      "size": [
+        200,
+        75
+      ],
+      "textSize": 50,
+      "position": [
+        300,
+        5
+      ],
+      "textColor": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "texts": []
+}
