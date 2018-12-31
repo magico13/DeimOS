@@ -1,29 +1,110 @@
 {
   "buttons": [
     {
-      "callback": "Scan",
+      "textSize": 50, 
+      "name": "btnScan", 
       "color": [
-        255,
-        255,
+        255, 
+        255, 
         0
-      ],
-      "text": "SCAN",
-      "name": "btnScan",
-      "size": [
-        200,
-        75
-      ],
-      "textSize": 50,
+      ], 
+      "text": "SCAN", 
+      "callback": "Scan", 
       "position": [
-        300,
+        300, 
         5
-      ],
+      ], 
       "textColor": [
-        0,
-        0,
+        0, 
+        0, 
         0
+      ], 
+      "size": [
+        200, 
+        75
+      ]
+    }, 
+    {
+      "textSize": 50, 
+      "name": "btnConnect", 
+      "color": [
+        0, 
+        255, 
+        255
+      ], 
+      "text": "Connect", 
+      "callback": "Connect", 
+      "position": [
+        300, 
+        355
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        200, 
+        75
       ]
     }
-  ],
-  "texts": []
+  ], 
+  "texts": [
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "SSID:", 
+      "height": 36, 
+      "name": "txtSSIDLabel", 
+      "position": [
+        470, 
+        140
+      ]
+    }, 
+    {
+      "color": [
+        0, 
+        255, 
+        255
+      ], 
+      "text": "None", 
+      "height": 36, 
+      "name": "txtSSID", 
+      "position": [
+        485, 
+        165
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Passkey:", 
+      "height": 36, 
+      "name": "txtPassLabel", 
+      "position": [
+        470, 
+        220
+      ]
+    }, 
+    {
+      "color": [
+        0, 
+        255, 
+        255
+      ], 
+      "text": "None", 
+      "height": 36, 
+      "name": "txtPass", 
+      "position": [
+        485, 
+        245
+      ]
+    }
+  ]
 }

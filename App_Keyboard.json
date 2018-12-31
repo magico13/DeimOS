@@ -1154,7 +1154,7 @@
     }, 
     {
       "textSize": 36, 
-      "name": "btn48", 
+      "name": "btn.", 
       "color": [
         0, 
         0, 
@@ -1274,14 +1274,14 @@
     }, 
     {
       "textSize": 36, 
-      "name": "btn53", 
+      "name": "btnAccept", 
       "color": [
         0, 
         255, 
         0
       ], 
       "text": "Accept", 
-      "callback": "cancel", 
+      "callback": "accept", 
       "position": [
         635, 
         380
@@ -1304,12 +1304,26 @@
         0, 
         0
       ], 
-      "text": "Your Text Here", 
+      "text": "", 
       "height": 36, 
       "name": "txtEntry", 
       "position": [
         14, 
-        15
+        50
+      ]
+    },
+    {
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "", 
+      "height": 30, 
+      "name": "txtPrompt", 
+      "position": [
+        5, 
+        5
       ]
     }
   ]
