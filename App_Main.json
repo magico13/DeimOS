@@ -369,7 +369,7 @@
         94
       ], 
       "text": "Auto", 
-      "callback": "lightsAuto Toggle", 
+      "callback": "lightsAutoToggle", 
       "position": [
         410, 
         310
