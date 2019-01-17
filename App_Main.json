@@ -1,0 +1,648 @@
+{
+  "buttons": [
+    {
+      "textSize": 36, 
+      "name": "btnMusicPanel", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Music", 
+      "callback": "musicPanel", 
+      "position": [
+        0, 
+        440
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        268, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnSystemsPanel", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Systems", 
+      "callback": "systemsPanel", 
+      "position": [
+        270, 
+        440
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        258, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnSettingsPanel", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Settings", 
+      "callback": "settingsPanel", 
+      "position": [
+        530, 
+        440
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        270, 
+        40
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnMusicPause", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "||", 
+      "callback": "musicPause", 
+      "position": [
+        0, 
+        370
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        130, 
+        60
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnMusicSkip", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": ">|", 
+      "callback": "musicSkip", 
+      "position": [
+        140, 
+        370
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        130, 
+        60
+      ]
+    }, 
+    {
+      "textSize": 50, 
+      "name": "btnVolDown", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "-", 
+      "callback": "volumeAdjust", 
+      "position": [
+        0, 
+        290
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        60, 
+        50
+      ]
+    }, 
+    {
+      "textSize": 50, 
+      "name": "btnVolUp", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "+", 
+      "callback": "volumeAdjust", 
+      "position": [
+        210, 
+        290
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        60, 
+        50
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnEngineToggle", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Stop Engine", 
+      "callback": "engineToggle", 
+      "position": [
+        20, 
+        20
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        230, 
+        60
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btn9", 
+      "color": [
+        160, 
+        160, 
+        160
+      ], 
+      "text": "", 
+      "callback": "None", 
+      "position": [
+        0, 
+        290
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        268, 
+        2
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btn10", 
+      "color": [
+        160, 
+        160, 
+        160
+      ], 
+      "text": "", 
+      "callback": "None", 
+      "position": [
+        268, 
+        0
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        2, 
+        480
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinUp", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Up", 
+      "callback": "windowChange", 
+      "position": [
+        280, 
+        40
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        110, 
+        50
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinDown", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Down", 
+      "callback": "windowChange", 
+      "position": [
+        410, 
+        40
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        110, 
+        50
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinAuto", 
+      "color": [
+        255, 
+        255, 
+        0
+      ], 
+      "text": "Auto", 
+      "callback": "windowAutoToggle", 
+      "position": [
+        280, 
+        100
+      ], 
+      "textColor": [
+        0, 
+        0, 
+        0
+      ], 
+      "size": [
+        240, 
+        50
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinUpMin", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "-", 
+      "callback": "winUpSpdAdj", 
+      "position": [
+        356, 
+        153
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        30, 
+        30
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinUpPlus", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "+", 
+      "callback": "winUpSpdAdj", 
+      "position": [
+        490, 
+        153
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        30, 
+        30
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinDwnMin", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "-", 
+      "callback": "winDwnSpdAdj", 
+      "position": [
+        356, 
+        183
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        30, 
+        30
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnWinDwnPlus", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "+", 
+      "callback": "winDwnSpdAdj", 
+      "position": [
+        490, 
+        183
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        30, 
+        30
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btn17", 
+      "color": [
+        160, 
+        160, 
+        160
+      ], 
+      "text": "", 
+      "callback": "None", 
+      "position": [
+        528, 
+        0
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        2, 
+        480
+      ]
+    }
+  ], 
+  "texts": [
+    {
+      "color": [
+        0, 
+        255, 
+        255
+      ], 
+      "text": "Bohemian Rhapsody", 
+      "height": 36, 
+      "name": "txtMusicPlaying", 
+      "position": [
+        6, 
+        340
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "13:37", 
+      "height": 50, 
+      "name": "txtClock", 
+      "position": [
+        700, 
+        10
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        0
+      ], 
+      "text": "62 MPH", 
+      "height": 50, 
+      "name": "txtSpeed", 
+      "position": [
+        30, 
+        85
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        0
+      ], 
+      "text": "3592 RPM", 
+      "height": 50, 
+      "name": "txt3", 
+      "position": [
+        30, 
+        115
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Coolant: 85F", 
+      "height": 36, 
+      "name": "txtCoolant", 
+      "position": [
+        40, 
+        155
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Airflow: 25%", 
+      "height": 36, 
+      "name": "txtAirflow", 
+      "position": [
+        40, 
+        180
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Intake: 62F", 
+      "height": 36, 
+      "name": "txtintakeTemp", 
+      "position": [
+        40, 
+        204
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Interior: 65F", 
+      "height": 36, 
+      "name": "txtInteriorTemp", 
+      "position": [
+        40, 
+        230
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Brightness: 76%", 
+      "height": 36, 
+      "name": "txtAmbientLight", 
+      "position": [
+        40, 
+        255
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Volume: 25%", 
+      "height": 30, 
+      "name": "txtVolume", 
+      "position": [
+        73, 
+        306
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Windows", 
+      "height": 36, 
+      "name": "txtWindowLabel", 
+      "position": [
+        280, 
+        15
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Up @", 
+      "height": 30, 
+      "name": "txtWinUpLabel", 
+      "position": [
+        280, 
+        157
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "50 mph", 
+      "height": 30, 
+      "name": "txtWinUpSpd", 
+      "position": [
+        400, 
+        157
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Dwn @", 
+      "height": 30, 
+      "name": "txtWinDownLabel", 
+      "position": [
+        280, 
+        187
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "30 mph", 
+      "height": 30, 
+      "name": "txtWinDwnSpd", 
+      "position": [
+        400, 
+        187
+      ]
+    }
+  ]
+}

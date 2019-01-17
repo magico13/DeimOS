@@ -9,7 +9,10 @@ class COLORS:
     BLUE=(0, 0, 255)
     CYAN=(0, 255, 255)
     MAGENTA=(255, 0, 255)
-    YELLOW=(255, 255, 0) 
+    YELLOW=(255, 255, 0)
+    GRAY=(127, 127, 127)
+    LIGHT_GRAY=(160, 160, 160)
+    DARK_GRAY=(94, 94, 94)
     
 class Button(object):
     def __init__(self, name, position, size, color=(0,0,255), text="", textColor=(255, 255, 255), onClick=None, txtSize = 36):
