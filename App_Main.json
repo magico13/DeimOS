@@ -252,7 +252,7 @@
       "callback": "windowChange", 
       "position": [
         280, 
-        40
+        70
       ], 
       "textColor": [
         255, 
@@ -276,7 +276,7 @@
       "callback": "windowChange", 
       "position": [
         410, 
-        40
+        70
       ], 
       "textColor": [
         255, 
@@ -292,120 +292,24 @@
       "textSize": 36, 
       "name": "btnWinAuto", 
       "color": [
-        255, 
-        255, 
-        0
+        94, 
+        94, 
+        94
       ], 
       "text": "Auto", 
       "callback": "windowAutoToggle", 
       "position": [
         280, 
-        100
+        140
       ], 
       "textColor": [
-        0, 
-        0, 
-        0
+        255, 
+        255, 
+        255
       ], 
       "size": [
         240, 
         50
-      ]
-    }, 
-    {
-      "textSize": 36, 
-      "name": "btnWinUpMin", 
-      "color": [
-        94, 
-        94, 
-        94
-      ], 
-      "text": "-", 
-      "callback": "winUpSpdAdj", 
-      "position": [
-        356, 
-        153
-      ], 
-      "textColor": [
-        255, 
-        255, 
-        255
-      ], 
-      "size": [
-        30, 
-        30
-      ]
-    }, 
-    {
-      "textSize": 36, 
-      "name": "btnWinUpPlus", 
-      "color": [
-        94, 
-        94, 
-        94
-      ], 
-      "text": "+", 
-      "callback": "winUpSpdAdj", 
-      "position": [
-        490, 
-        153
-      ], 
-      "textColor": [
-        255, 
-        255, 
-        255
-      ], 
-      "size": [
-        30, 
-        30
-      ]
-    }, 
-    {
-      "textSize": 36, 
-      "name": "btnWinDwnMin", 
-      "color": [
-        94, 
-        94, 
-        94
-      ], 
-      "text": "-", 
-      "callback": "winDwnSpdAdj", 
-      "position": [
-        356, 
-        183
-      ], 
-      "textColor": [
-        255, 
-        255, 
-        255
-      ], 
-      "size": [
-        30, 
-        30
-      ]
-    }, 
-    {
-      "textSize": 36, 
-      "name": "btnWinDwnPlus", 
-      "color": [
-        94, 
-        94, 
-        94
-      ], 
-      "text": "+", 
-      "callback": "winDwnSpdAdj", 
-      "position": [
-        490, 
-        183
-      ], 
-      "textColor": [
-        255, 
-        255, 
-        255
-      ], 
-      "size": [
-        30, 
-        30
       ]
     }, 
     {
@@ -431,6 +335,54 @@
         2, 
         480
       ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnLightToggle", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "On", 
+      "callback": "lightsChange", 
+      "position": [
+        280, 
+        310
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        110, 
+        50
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnLightAuto", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Auto", 
+      "callback": "lightsAuto Toggle", 
+      "position": [
+        410, 
+        310
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        110, 
+        50
+      ]
     }
   ], 
   "texts": [
@@ -440,7 +392,7 @@
         255, 
         255
       ], 
-      "text": "Bohemian Rhapsody", 
+      "text": "N/A", 
       "height": 36, 
       "name": "txtMusicPlaying", 
       "position": [
@@ -468,7 +420,7 @@
         255, 
         0
       ], 
-      "text": "62 MPH", 
+      "text": "0 MPH", 
       "height": 50, 
       "name": "txtSpeed", 
       "position": [
@@ -482,7 +434,7 @@
         255, 
         0
       ], 
-      "text": "3592 RPM", 
+      "text": "0000 RPM", 
       "height": 50, 
       "name": "txt3", 
       "position": [
@@ -496,7 +448,7 @@
         255, 
         255
       ], 
-      "text": "Coolant: 85F", 
+      "text": "Coolant: 0F", 
       "height": 36, 
       "name": "txtCoolant", 
       "position": [
@@ -510,7 +462,7 @@
         255, 
         255
       ], 
-      "text": "Airflow: 25%", 
+      "text": "Airflow: 0%", 
       "height": 36, 
       "name": "txtAirflow", 
       "position": [
@@ -524,7 +476,7 @@
         255, 
         255
       ], 
-      "text": "Intake: 62F", 
+      "text": "Intake: 0F", 
       "height": 36, 
       "name": "txtintakeTemp", 
       "position": [
@@ -538,7 +490,7 @@
         255, 
         255
       ], 
-      "text": "Interior: 65F", 
+      "text": "Interior: 0F", 
       "height": 36, 
       "name": "txtInteriorTemp", 
       "position": [
@@ -552,7 +504,7 @@
         255, 
         255
       ], 
-      "text": "Brightness: 76%", 
+      "text": "Brightness: 0%", 
       "height": 36, 
       "name": "txtAmbientLight", 
       "position": [
@@ -566,7 +518,7 @@
         255, 
         255
       ], 
-      "text": "Volume: 25%", 
+      "text": "Volume: 0%", 
       "height": 30, 
       "name": "txtVolume", 
       "position": [
@@ -581,10 +533,10 @@
         255
       ], 
       "text": "Windows", 
-      "height": 36, 
+      "height": 40, 
       "name": "txtWindowLabel", 
       "position": [
-        280, 
+        340, 
         15
       ]
     }, 
@@ -594,54 +546,12 @@
         255, 
         255
       ], 
-      "text": "Up @", 
-      "height": 30, 
-      "name": "txtWinUpLabel", 
+      "text": "Lights", 
+      "height": 40, 
+      "name": "txtLightLabel", 
       "position": [
-        280, 
-        157
-      ]
-    }, 
-    {
-      "color": [
-        255, 
-        255, 
+        361, 
         255
-      ], 
-      "text": "50 mph", 
-      "height": 30, 
-      "name": "txtWinUpSpd", 
-      "position": [
-        400, 
-        157
-      ]
-    }, 
-    {
-      "color": [
-        255, 
-        255, 
-        255
-      ], 
-      "text": "Dwn @", 
-      "height": 30, 
-      "name": "txtWinDownLabel", 
-      "position": [
-        280, 
-        187
-      ]
-    }, 
-    {
-      "color": [
-        255, 
-        255, 
-        255
-      ], 
-      "text": "30 mph", 
-      "height": 30, 
-      "name": "txtWinDwnSpd", 
-      "position": [
-        400, 
-        187
       ]
     }
   ]
