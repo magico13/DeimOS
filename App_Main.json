@@ -74,14 +74,14 @@
     }, 
     {
       "textSize": 36, 
-      "name": "btnMusicPause", 
+      "name": "btnMusicPlay", 
       "color": [
         0, 
         0, 
         0
       ], 
-      "text": "||", 
-      "callback": "musicPause", 
+      "text": ">", 
+      "callback": "musicPlay", 
       "position": [
         0, 
         370
@@ -252,7 +252,7 @@
       "callback": "windowChange", 
       "position": [
         280, 
-        70
+        80
       ], 
       "textColor": [
         255, 
@@ -276,7 +276,7 @@
       "callback": "windowChange", 
       "position": [
         410, 
-        70
+        80
       ], 
       "textColor": [
         255, 
@@ -300,7 +300,7 @@
       "callback": "windowAutoToggle", 
       "position": [
         280, 
-        140
+        150
       ], 
       "textColor": [
         255, 
@@ -383,6 +383,30 @@
         110, 
         50
       ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnVersion", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "DeimOS v0.0", 
+      "callback": "updateVersion", 
+      "position": [
+        635, 
+        405
+      ], 
+      "textColor": [
+        255, 
+        0, 
+        0
+      ], 
+      "size": [
+        160, 
+        30
+      ]
     }
   ], 
   "texts": [
@@ -394,7 +418,7 @@
       ], 
       "text": "N/A", 
       "height": 36, 
-      "name": "txtMusicPlaying", 
+      "name": "txtMusicTitle", 
       "position": [
         6, 
         340
@@ -418,28 +442,28 @@
       "color": [
         255, 
         255, 
-        0
+        255
       ], 
       "text": "0 MPH", 
-      "height": 50, 
+      "height": 60, 
       "name": "txtSpeed", 
       "position": [
-        30, 
-        85
+        70, 
+        165
       ]
     }, 
     {
       "color": [
         255, 
         255, 
-        0
+        255
       ], 
       "text": "0000 RPM", 
-      "height": 50, 
-      "name": "txt3", 
+      "height": 60, 
+      "name": "txtRPM", 
       "position": [
         30, 
-        115
+        215
       ]
     }, 
     {
@@ -452,8 +476,8 @@
       "height": 36, 
       "name": "txtCoolant", 
       "position": [
-        40, 
-        155
+        570, 
+        195
       ]
     }, 
     {
@@ -466,8 +490,8 @@
       "height": 36, 
       "name": "txtAirflow", 
       "position": [
-        40, 
-        180
+        570, 
+        275
       ]
     }, 
     {
@@ -480,8 +504,8 @@
       "height": 36, 
       "name": "txtintakeTemp", 
       "position": [
-        40, 
-        204
+        570, 
+        235
       ]
     }, 
     {
@@ -494,8 +518,8 @@
       "height": 36, 
       "name": "txtInteriorTemp", 
       "position": [
-        40, 
-        230
+        570, 
+        155
       ]
     }, 
     {
@@ -508,8 +532,8 @@
       "height": 36, 
       "name": "txtAmbientLight", 
       "position": [
-        40, 
-        255
+        570, 
+        115
       ]
     }, 
     {
@@ -537,7 +561,7 @@
       "name": "txtWindowLabel", 
       "position": [
         340, 
-        15
+        25
       ]
     }, 
     {
@@ -552,6 +576,48 @@
       "position": [
         361, 
         255
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        0
+      ], 
+      "text": "N", 
+      "height": 80, 
+      "name": "txtGear", 
+      "position": [
+        110, 
+        100
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Battery: 0V", 
+      "height": 36, 
+      "name": "txt12V", 
+      "position": [
+        570, 
+        75
+      ]
+    }, 
+    {
+      "color": [
+        255, 
+        255, 
+        255
+      ], 
+      "text": "Sensors", 
+      "height": 40, 
+      "name": "txtSensorsLbl", 
+      "position": [
+        550, 
+        25
       ]
     }
   ]

@@ -25,9 +25,11 @@ class Button(object):
         self.VISIBLE = True
         self.OnClick = onClick
         self.TXTSIZE = txtSize
+        self.updated = True
         
     def Draw(self, surf, justification = "center"):
         if not self.VISIBLE: return self
+        self.updated = False
         if self.COLOR != None: pygame.draw.rect(surf, self.COLOR, (self.POS, self.SIZE))
         if self.TXT != "":
             font = pygame.font.Font(None, self.TXTSIZE) #TODO: Figure out a way to auto-size the text
@@ -53,6 +55,7 @@ class Button(object):
         
     def SetVisible(self, vis):
         self.VISIBLE = vis
+        self.updated = True
         
     def Check(self, mousePos):
         if self.OnClick != None and self.Clicked(mousePos):
@@ -60,6 +63,26 @@ class Button(object):
             return True
         return False
         
+    def set_text(self, text = None, color = None, size = None):
+        if not text: text = self.TXT
+        if not color: color = self.TXTCOLOR
+        if not size: size = self.TXTSIZE
+        self.TXT = text
+        self.TXTCOLOR = color
+        self.TXTSIZE = size
+        self.updated = True
+    
+    def set_color(self, color):
+        self.COLOR = color
+        self.updated = True
+
+    def set_rectangle(self, position, size):
+        if not position: position = self.POS
+        if not size: size = self.SIZE
+        self.POS = position
+        self.SIZE = size
+        self.updated = True
+
 class Text(object):
     def __init__(self, name, text, position, height=36, color=(0, 0, 0)):
         self.NAME = name
@@ -68,9 +91,11 @@ class Text(object):
         self.HT = height
         self.COLOR = color
         self.VISIBLE = True
+        self.updated = True
         
     def Draw(self, surf, shadow=False):
-        if not self.VISIBLE: return
+        if not self.VISIBLE: return self
+        self.updated = False
         self.FONT = pygame.font.Font(None, self.HT)
         if shadow:
             text = self.FONT.render(self.TXT, 1, (255-self.COLOR[0], 255-self.COLOR[1], 255-self.COLOR[2]))
@@ -91,12 +116,15 @@ class Text(object):
         if horizontal: newLeft = pt[0]-(textPos.width/2)
         if vertical: newTop = pt[1] - (textPos.height/2)
         self.POS = (newLeft, newTop)
+        self.updated = True
     
     def SetText(self, text):
         self.TXT = text
+        self.updated = True
         
     def SetVisible(self, vis):
         self.VISIBLE = vis
+        self.updated = True
         
     def Clicked(self, mousePos): #this one requires you to pass the mouse coordinates
         if not self.VISIBLE: return False
@@ -109,6 +137,18 @@ class Text(object):
         text = self.FONT.render(self.TXT, 1, self.COLOR)
         return text.get_rect(left=self.POS[0], top=self.POS[1])
         
+    def set_position(self, position):
+        self.POS = position
+        self.updated = True
+
+    def set_color(self, color):
+        self.COLOR = color
+        self.updated = True
+
+    def set_height(self, height):
+        self.HT = height
+        self.updated = True
+
 class TextPopup(Text):
     def __init__(self, text, timeout=10, size=36, color=COLORS.WHITE, backgroundColor=COLORS.BLACK):
         self.TXT = text
