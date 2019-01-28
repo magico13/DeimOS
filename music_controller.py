@@ -28,12 +28,16 @@ class music_controller(object):
     def set_current_index(self, index, load = True):
         '''Sets the current index being played and loads the appropraite song if requested.
         Intended for internal use only.'''
-        index %= len(self.playlist)
+        if len(self.playlist) > 0:
+            index %= len(self.playlist)
+        else:
+            index = -1
         self.current_index = index
-        if load:
+        if load and index >= 0:
             mixer.music.stop()
             mixer.music.load(self.playlist[index])
             mixer.music.set_volume(self.volume) # volume is lost after a load
+        return index
 
     def play(self, index=None):
         '''Plays the song at the index or unpauses the music.'''
@@ -41,9 +45,11 @@ class music_controller(object):
         if (not self.playing and mixer.music.get_busy() and index == self.current_index): #paused
             mixer.music.unpause()
         else: #stopped or different song
-            self.set_current_index(index)
+            index = self.set_current_index(index)
+            if index < 0: return False
             mixer.music.play()
         self.playing = True
+        return True
         #TODO:save the current index in a persistent place
 
     def stop(self):
@@ -114,15 +120,16 @@ class music_controller(object):
 
     def get_song_index_by_name(self, name):
         '''Finds the index for a particular song'''
-        for i in range(len(self.playlist)):
-            if (self.playlist[i] == name):
-                return i
-        return 0
+        if len(self.playlist) > 0:
+            for i in range(len(self.playlist)):
+                if (self.playlist[i] == name):
+                    return i
+        return -1
 
     def get_pretty_name(self, index=None):
         '''Returns a "pretty" name for an mp3, stripping off extra characters when possible.'''
         if not index: index = self.current_index
-        if (index >= len(self.playlist)): return 'N/A'
+        if (index >= len(self.playlist) or index < 0): return 'N/A'
         pretty = os.path.basename(self.playlist[index][:-4])
         if '- ' in pretty:
             pretty = pretty.rsplit('- ', 1)[1].strip() #turn "02 - filename" into "filename"
