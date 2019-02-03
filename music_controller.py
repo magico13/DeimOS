@@ -41,6 +41,7 @@ class music_controller(object):
 
     def play(self, index=None):
         '''Plays the song at the index or unpauses the music.'''
+        if len(self.playlist) == 0: load_playlist()
         if not index: index = self.current_index
         if (not self.playing and mixer.music.get_busy() and index == self.current_index): #paused
             mixer.music.unpause()
