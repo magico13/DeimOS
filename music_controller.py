@@ -1,11 +1,12 @@
 import os
 import random
+import traceback
 
 import pygame
 from pygame import mixer
 
 class music_controller(object):
-    music_directory = '/home/pi/music'
+    music_directory = '/home/magico13/Music'
     playlist = []
     regular_playlist = []
     shuffled_playlist = []
@@ -19,6 +20,9 @@ class music_controller(object):
     def __init__(self):
         mixer.init()
         mixer.music.set_endevent(self.SONG_FINISHED)
+        if self.load_playlist_file() > 0:
+            self.load_current_index_file()
+
 
     def update(self):
         '''Called when a song finishes playback.'''
@@ -37,6 +41,7 @@ class music_controller(object):
             mixer.music.stop()
             mixer.music.load(self.playlist[index])
             mixer.music.set_volume(self.volume) # volume is lost after a load
+        with open('data/music_index.txt', 'w') as f: f.write('{}\n'.format(index))
         return index
 
     def play(self, index=None):
@@ -51,7 +56,6 @@ class music_controller(object):
             mixer.music.play()
         self.playing = True
         return True
-        #TODO:save the current index in a persistent place
 
     def stop(self):
         '''Stops music playback.'''
@@ -117,7 +121,52 @@ class music_controller(object):
         print('Found a total of {0} mp3 files.'.format(len(self.playlist)))
         if (len(self.playlist) > 0):
             #self.set_current_index(max(0, self.current_index))
+            self.regular_playlist = self.playlist
             if (self.shuffled): self.shuffle_task()
+        #save the playlist to a file
+        with open('data/playlist.txt', 'w') as f:
+            f.write('\n'.join(self.regular_playlist))
+            if (self.shuffled):
+                f.write('shuffled\n')
+                f.writelines('\n'.join(self.shuffled_playlist))
+
+    def load_playlist_file(self, path='data/playlist.txt'):
+        '''Loads the playlist from the provided file'''
+        self.regular_playlist = []
+        self.playlist = []
+        self.shuffled_playlist = []
+        loadingShuffled = False
+        try:
+            with open(path, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if line == "shuffled":
+                        loadingShuffled = True
+                        continue
+                    if not loadingShuffled:
+                        self.regular_playlist.append(line)
+                    else:
+                        self.shuffled_playlist.append(line)
+            if self.shuffled:
+               self.playlist = list(self.shuffled_playlist)
+            else:
+                self.playlist = list(self.regular_playlist)
+            print('Loaded playlist of {} items'.format(len(self.playlist)))
+        except:
+            traceback.print_exc()
+        return len(self.playlist)
+
+    def load_current_index_file(self, path='data/music_index.txt'):
+        '''Loads the current index in the playlist from a file'''
+        self.current_index = 0
+        try:
+            with open(path, 'r') as f:
+                current = int(f.readline().strip())
+            self.set_current_index(current)
+        except:
+            traceback.print_exc()
+        return self.current_index
+
 
     def get_song_index_by_name(self, name):
         '''Finds the index for a particular song'''
@@ -127,11 +176,12 @@ class music_controller(object):
                     return i
         return -1
 
-    def get_pretty_name(self, index=None):
+    def get_pretty_name(self, index=None, max_characters=20):
         '''Returns a "pretty" name for an mp3, stripping off extra characters when possible.'''
         if not index: index = self.current_index
         if (index >= len(self.playlist) or index < 0): return 'N/A'
         pretty = os.path.basename(self.playlist[index][:-4])
         if '- ' in pretty:
             pretty = pretty.rsplit('- ', 1)[1].strip() #turn "02 - filename" into "filename"
+        if len(pretty) > max_characters: pretty = pretty[:max_characters]+'...'
         return pretty
