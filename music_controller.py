@@ -22,6 +22,7 @@ class music_controller(object):
         mixer.music.set_endevent(self.SONG_FINISHED)
         if self.load_playlist_file() > 0:
             self.load_current_index_file()
+        self.load_volume_file()
 
 
     def update(self):
@@ -83,12 +84,14 @@ class music_controller(object):
         self.volume += amount
         self.volume = min(self.volume, 1.0)
         mixer.music.set_volume(self.volume)
+        with open('data/volume.txt', 'w') as f: f.write(str(self.volume))
 
     def volume_down(self, amount=0.05):
         '''Turns down the volume by the specified amount (default 5%)'''
         self.volume -= amount
         self.volume = max(self.volume, 0)
         mixer.music.set_volume(self.volume)
+        with open('data/volume.txt', 'w') as f: f.write(str(self.volume))
 
     def shuffle_task(self):
         '''Shuffles or unshuffles the playlist depending on the current state.'''
@@ -128,7 +131,7 @@ class music_controller(object):
             f.write('\n'.join(self.regular_playlist))
             if (self.shuffled):
                 f.write('shuffled\n')
-                f.writelines('\n'.join(self.shuffled_playlist))
+                f.write('\n'.join(self.shuffled_playlist))
 
     def load_playlist_file(self, path='data/playlist.txt'):
         '''Loads the playlist from the provided file'''
@@ -167,6 +170,13 @@ class music_controller(object):
             traceback.print_exc()
         return self.current_index
 
+    def load_volume_file(self, path='data/volume.txt'):
+        self.volume = 0.1
+        try:
+            with open(path, 'r') as f:
+                self.volume = float(f.readline().strip())
+        except:
+            traceback.print_exc()
 
     def get_song_index_by_name(self, name):
         '''Finds the index for a particular song'''
