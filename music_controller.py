@@ -146,6 +146,8 @@ class music_controller(object):
                     if line == "shuffled":
                         loadingShuffled = True
                         continue
+                    #verify that the file is accessible
+                    if not os.path.exists(line): continue
                     if not loadingShuffled:
                         self.regular_playlist.append(line)
                     else:

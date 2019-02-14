@@ -134,9 +134,8 @@ class Text(object):
         return textPos.collidepoint(mousePos)
         
     def GetRect(self):
-        text = self.FONT.render(self.TXT, 1, self.COLOR)
-        return text.get_rect(left=self.POS[0], top=self.POS[1])
-        
+        return self.FONT.size(self.TXT)
+
     def set_position(self, position):
         self.POS = position
         self.updated = True

@@ -20,6 +20,8 @@ class CORE:
     Width = 800
     Height = 480
     def __init__(self):
+        pygame.display.set_caption('DeimOS')
+        
         self.screen = pygame.display.set_mode((self.Width, self.Height), 0, 32)
         self.CREATE_DATA_DIR()
         
