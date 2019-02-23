@@ -9,6 +9,7 @@ uint8_t missed_checkins = 0;
 #define PIN_USER 3
 #define PIN_5V 2
 #define PIN_LED 13
+#define PIN_SPEEDO 5 //required for using frequency monitor
 
 //PWR modes
 #define MODE_OFF 0
@@ -36,6 +37,8 @@ void loop()
   {
     button_time = now - ms_pressed;
     ms_pressed = 0;
+    Serial.print("Button ms: ");
+    Serial.println(button_time);
   }
   digitalWrite(PIN_LED, (PWR_MODE != MODE_OFF));
 
@@ -49,9 +52,10 @@ void loop()
     }
     if (button_time > 500) //half a second
     {
-      PWR_MODE = MODE_START; //swap to start mode
+      PWR_MODE = MODE_UNMANAGED; //swap to start mode //temporarily swapping to Unmanaged mode
       timeout_timer = now;
       digitalWrite(PIN_5V, HIGH);
+      Serial.println("Mode switch: OFF -> UNMANAGED");
     }
   }
   if (PWR_MODE == MODE_START) //give power and wait a minute for a signal from pi, otherwise fall back to off mode
@@ -59,10 +63,12 @@ void loop()
     if (Serial.available() > 0)
     {
       PWR_MODE = MODE_MANAGED; //swap to managed mode, looking for constant serial communication
+      Serial.println("Mode switch: START -> MANAGED");
     }
     else if (now - timeout_timer > 60000)
     {
       PWR_MODE = MODE_OFF; //60 seconds have passed with no serial input, shut down
+      Serial.println("Mode switch: START -> OFF");
     }
   }
   if (PWR_MODE == MODE_MANAGED)
@@ -87,6 +93,7 @@ void loop()
       { //turn off the power (and TODO: start up again automatically)
         PWR_MODE = MODE_OFF;
         missed_checkins = 0;
+        Serial.println("Mode switch: MANAGED -> OFF");
       }
     }
   }
@@ -97,6 +104,7 @@ void loop()
     if (button_time > 30000)
     {
       PWR_MODE = MODE_OFF;
+      Serial.println("Mode switch: SHUTDOWN -> OFF");
     }
   }
 
@@ -107,10 +115,11 @@ void loop()
     {
       ms_pressed = now;
     }
-    if ((now - ms_pressed) > 5000)
+    if (button_time > 5000)
     {
       ms_pressed = 0;
-      PWR_MODE = MODE_OFF; //swap to start mode
+      PWR_MODE = MODE_OFF;
+      Serial.println("Mode switch: BUTTON -> OFF"); //the user can hold the button to force the system off
     }
   }
   // send data only when you receive data:
