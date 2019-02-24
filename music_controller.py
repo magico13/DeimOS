@@ -1,9 +1,9 @@
 import os
 import random
 import traceback
+from datetime import datetime
 
-import pygame
-from pygame import mixer
+import vlc
 
 class music_controller(object):
     music_directory = '/home/magico13/Music'
@@ -13,22 +13,33 @@ class music_controller(object):
     shuffled = False
     playing = False
     current_index = 0
-    volume = 0.1
+    volume = 10
 
-    SONG_FINISHED = pygame.USEREVENT+1
+    instance = None
+    player = None
+
+    current_file = 'data/music_current.txt'
+    playlist_file = 'data/music_playlist.txt'
+    volume_file = 'data/volume.txt'
+
+    last_update = None
 
     def __init__(self):
-        mixer.init()
-        mixer.music.set_endevent(self.SONG_FINISHED)
+        self.instance = vlc.Instance()
+        self.player = self.instance.media_player_new()
         if self.load_playlist_file() > 0:
-            self.load_current_index_file()
+            self.load_current_music_file()
         self.load_volume_file()
-
+        self.last_update = datetime.utcnow()
 
     def update(self):
         '''Called when a song finishes playback.'''
-        if (self.playing):
-            self.skip_forward()
+        if (self.playing and not self.player.is_playing()):
+            if (datetime.utcnow() - self.last_update).total_seconds() > 1:
+                self.skip_forward()
+                return True
+            self.last_update = datetime.utcnow()
+        return False
 
     def set_current_index(self, index, load = True):
         '''Sets the current index being played and loads the appropraite song if requested.
@@ -39,33 +50,35 @@ class music_controller(object):
             index = -1
         self.current_index = index
         if load and index >= 0:
-            mixer.music.stop()
-            mixer.music.load(self.playlist[index])
-            mixer.music.set_volume(self.volume) # volume is lost after a load
-        with open('data/music_index.txt', 'w') as f: f.write('{}\n'.format(index))
+            media = self.instance.media_new(self.playlist[index])
+            self.player.set_media(media)
+            self.player.audio_set_volume(self.volume)
+        if index >= 0: 
+            with open(self.current_file, 'w') as f: 
+                f.write('{}\n'.format(self.playlist[index]))
         return index
 
     def play(self, index=None):
         '''Plays the song at the index or unpauses the music.'''
         if len(self.playlist) == 0: self.load_playlist()
         if not index: index = self.current_index
-        if (not self.playing and mixer.music.get_busy() and index == self.current_index): #paused
-            mixer.music.unpause()
+        if (not self.playing and index == self.current_index and self.player.get_state() == vlc.State.Paused): #paused
+            self.player.set_pause(0)
         else: #stopped or different song
             index = self.set_current_index(index)
             if index < 0: return False
-            mixer.music.play()
+            self.player.play()
         self.playing = True
         return True
 
     def stop(self):
         '''Stops music playback.'''
-        mixer.music.stop()
+        self.player.stop()
         self.playing = False
     
     def pause(self):
         '''Pauses music playback.'''
-        mixer.music.pause()
+        self.player.pause()
         self.playing = False
 
     def skip_forward(self):
@@ -74,24 +87,24 @@ class music_controller(object):
     
     def skip_backward(self):
         '''Rewinds the song if it has played more than 5 seconds, otherwise skips to the previous song.'''
-        if (self.playing and mixer.music.get_pos() > 5000):
-            mixer.music.play()
+        if (self.playing and self.player.get_time() > 5000):
+             self.player.set_time(0)
         else:
             self.play(self.current_index - 1)
     
-    def volume_up(self, amount=0.05):
+    def volume_up(self, amount=5):
         '''Turns up the volume by the specified amount (default 5%)'''
         self.volume += amount
-        self.volume = min(self.volume, 1.0)
-        mixer.music.set_volume(self.volume)
-        with open('data/volume.txt', 'w') as f: f.write(str(self.volume))
+        self.volume = min(self.volume, 100)
+        if self.player: self.player.audio_set_volume(self.volume)
+        with open(self.volume_file, 'w') as f: f.write(str(self.volume))
 
-    def volume_down(self, amount=0.05):
+    def volume_down(self, amount=5):
         '''Turns down the volume by the specified amount (default 5%)'''
         self.volume -= amount
         self.volume = max(self.volume, 0)
-        mixer.music.set_volume(self.volume)
-        with open('data/volume.txt', 'w') as f: f.write(str(self.volume))
+        if self.player: self.player.audio_set_volume(self.volume)
+        with open(self.volume_file, 'w') as f: f.write(str(self.volume))
 
     def shuffle_task(self):
         '''Shuffles or unshuffles the playlist depending on the current state.'''
@@ -127,18 +140,19 @@ class music_controller(object):
             self.regular_playlist = self.playlist
             if (self.shuffled): self.shuffle_task()
         #save the playlist to a file
-        with open('data/playlist.txt', 'w') as f:
+        with open(self.playlist_file, 'w') as f:
             f.write('\n'.join(self.regular_playlist))
             if (self.shuffled):
                 f.write('shuffled\n')
                 f.write('\n'.join(self.shuffled_playlist))
 
-    def load_playlist_file(self, path='data/playlist.txt'):
+    def load_playlist_file(self, path=None):
         '''Loads the playlist from the provided file'''
         self.regular_playlist = []
         self.playlist = []
         self.shuffled_playlist = []
         loadingShuffled = False
+        if not path: path = self.playlist_file
         try:
             with open(path, 'r') as f:
                 for line in f:
@@ -161,22 +175,25 @@ class music_controller(object):
             traceback.print_exc()
         return len(self.playlist)
 
-    def load_current_index_file(self, path='data/music_index.txt'):
+    def load_current_music_file(self, path=None):
         '''Loads the current index in the playlist from a file'''
         self.current_index = 0
+        if not path: path = self.current_file
         try:
             with open(path, 'r') as f:
-                current = int(f.readline().strip())
+                current = f.readline().strip()
+            current = self.get_song_index_by_name(current)
             self.set_current_index(current)
         except:
             traceback.print_exc()
         return self.current_index
 
-    def load_volume_file(self, path='data/volume.txt'):
-        self.volume = 0.1
+    def load_volume_file(self, path=None):
+        self.volume = 10
+        if not path: path = self.volume_file
         try:
             with open(path, 'r') as f:
-                self.volume = float(f.readline().strip())
+                self.volume = int(f.readline().strip())
         except:
             traceback.print_exc()
 

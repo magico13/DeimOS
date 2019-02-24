@@ -50,8 +50,8 @@ class CORE:
         
     
     def DRAW(self):
-        self.ActiveApp.Draw(self.screen)
-        pygame.display.update()
+        if self.ActiveApp.Draw(self.screen):
+            pygame.display.update()
         FPS_control.FPS_Wait()
           
     def HOME(self, btnID):
@@ -79,6 +79,7 @@ if __name__ == "__main__":
 #    os.environ["SDL_VIDEODRIVER"] = "fbcon"
 
     pygame.init()
+    pygame.mixer.quit()
     
     pygame.mouse.set_visible(True)
     
