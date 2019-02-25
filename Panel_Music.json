@@ -1,0 +1,77 @@
+{
+  "buttons": [
+    {
+      "textSize": 36, 
+      "name": "btnRewind", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "< Previous", 
+      "callback": "musicPrevious", 
+      "position": [
+        10, 
+        10
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        248, 
+        70
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnShuffle", 
+      "color": [
+        94, 
+        94, 
+        94
+      ], 
+      "text": "Shuffle: Off", 
+      "callback": "musicShuffle", 
+      "position": [
+        10, 
+        90
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        248, 
+        70
+      ]
+    }, 
+    {
+      "textSize": 36, 
+      "name": "btnSelect", 
+      "color": [
+        0, 
+        0, 
+        0
+      ], 
+      "text": "Select Files", 
+      "callback": "musicFileSelect", 
+      "position": [
+        10, 
+        170
+      ], 
+      "textColor": [
+        255, 
+        255, 
+        255
+      ], 
+      "size": [
+        248, 
+        70
+      ]
+    }
+  ], 
+  "texts": []
+}
