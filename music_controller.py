@@ -60,7 +60,7 @@ class music_controller(object):
 
     def play(self, index=None):
         '''Plays the song at the index or unpauses the music.'''
-        if len(self.playlist) == 0: self.load_playlist()
+        if len(self.playlist) == 0: self.load_library()
         if not index: index = self.current_index
         if (not self.playing and index == self.current_index and self.player.get_state() == vlc.State.Paused): #paused
             self.player.set_pause(0)
@@ -106,19 +106,25 @@ class music_controller(object):
         if self.player: self.player.audio_set_volume(self.volume)
         with open(self.volume_file, 'w') as f: f.write(str(self.volume))
 
+    def toggle_shuffle(self):
+        self.shuffled = not self.shuffled
+        self.shuffle_task()
+
     def shuffle_task(self):
         '''Shuffles or unshuffles the playlist depending on the current state.'''
         if (len(self.playlist) > 0):
             playing_name = self.playlist[self.current_index]
             if self.shuffled: #shuffle the playlist
-                self.regular_playlist = self.playlist
+                self.regular_playlist = list(self.playlist)
                 random.shuffle(self.playlist)
+                self.shuffled_playlist = list(self.playlist)
             else:
-                self.playlist = self.regular_playlist
+                self.playlist = list(self.regular_playlist)
             index = self.get_song_index_by_name(playing_name)
             self.set_current_index(index, False)
+            self.save_playlist()
 
-    def load_playlist(self, directory=None):
+    def load_library(self, directory=None):
         '''Loads the music contained in "directory" and any subfolders.'''
         if not directory: directory = self.music_directory
 
@@ -139,11 +145,14 @@ class music_controller(object):
             #self.set_current_index(max(0, self.current_index))
             self.regular_playlist = self.playlist
             if (self.shuffled): self.shuffle_task()
-        #save the playlist to a file
+        self.save_playlist()
+
+    def save_playlist(self):
+        '''Save the playlist to a file'''
         with open(self.playlist_file, 'w') as f:
             f.write('\n'.join(self.regular_playlist))
             if (self.shuffled):
-                f.write('shuffled\n')
+                f.write('\nshuffled\n')
                 f.write('\n'.join(self.shuffled_playlist))
 
     def load_playlist_file(self, path=None):
@@ -159,6 +168,7 @@ class music_controller(object):
                     line = line.strip()
                     if line == "shuffled":
                         loadingShuffled = True
+                        self.shuffled = True
                         continue
                     #verify that the file is accessible
                     if not os.path.exists(line): continue

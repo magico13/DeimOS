@@ -13,7 +13,6 @@ class App(object):
       button.Draw(screen)
     for text in self.Texts:
       text.Draw(screen)
-    pygame.display.update()
     return
       
   def Draw(self, screen):

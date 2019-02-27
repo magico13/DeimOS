@@ -47,6 +47,7 @@ class CORE:
             self.ActiveApp = newAPP()
             self.ActiveApp.CORE_ID = name
         self.ActiveApp.FirstDraw(self.screen)
+        pygame.display.update()
         
     
     def DRAW(self):

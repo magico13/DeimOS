@@ -28,9 +28,9 @@
       "textSize": 36, 
       "name": "btnShuffle", 
       "color": [
-        94, 
-        94, 
-        94
+        160, 
+        160, 
+        160
       ], 
       "text": "Shuffle: Off", 
       "callback": "musicShuffle", 
