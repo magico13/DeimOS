@@ -23,9 +23,11 @@ class App_Main(App):
         port = '/dev/ttyUSB0'
         try:
             self.arduino = serial.Serial(port, 115200, timeout=0) #instant read, don't wait for data
+            self.GetButtonByID('btnVersion').set_text(color = COLORS.GREEN)
         except:
             print('Cannot connect to arduino on port: {}'.format(port))
             self.arduino = None
+            self.GetButtonByID('btnVersion').set_text(color = COLORS.RED)
 
 
     def FirstDraw(self, screen):
