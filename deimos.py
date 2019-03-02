@@ -7,7 +7,6 @@ import utils
 from utils import COLORS
 
 import pygame, sys, os, time
-from pygame.locals import *
 from datetime import datetime
 
 class CORE:
@@ -62,13 +61,13 @@ class CORE:
     def EVENTLOOP(self):
         events = pygame.event.get()
         for event in events:
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 self.Run = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.Run = False
                 
         self.ActiveApp.EventLoop(events)
-        for appname, app in self.BackgroundApps.items():
+        for _, app in self.BackgroundApps.items():
             app.BackgroundEventLoop(events)
         
         

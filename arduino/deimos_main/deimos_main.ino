@@ -37,8 +37,8 @@ void loop()
   {
     button_time = now - ms_pressed;
     ms_pressed = 0;
-    Serial.print("Button ms: ");
-    Serial.println(button_time);
+    //Serial.print("Button ms: ");
+    //Serial.println(button_time);
   }
   digitalWrite(PIN_LED, (PWR_MODE != MODE_OFF));
 
@@ -52,10 +52,10 @@ void loop()
     }
     if (button_time > 500) //half a second
     {
-      PWR_MODE = MODE_UNMANAGED; //swap to start mode //temporarily swapping to Unmanaged mode
+      PWR_MODE = MODE_START; //swap to start mode //temporarily swapping to Unmanaged mode
       timeout_timer = now;
       digitalWrite(PIN_5V, HIGH);
-      Serial.println("Mode switch: OFF -> UNMANAGED");
+      Serial.println("Mode switch: OFF -> START");
     }
   }
   if (PWR_MODE == MODE_START) //give power and wait a minute for a signal from pi, otherwise fall back to off mode
@@ -71,22 +71,20 @@ void loop()
       Serial.println("Mode switch: START -> OFF");
     }
   }
-  if (PWR_MODE == MODE_MANAGED)
+  if (PWR_MODE == MODE_MANAGED || PWR_MODE == MODE_UNMANAGED)
   {
     int32_t available = Serial.available();
     if (available > 0) 
     {
       missed_checkins = 0;
-      int32_t incomingByte;
-      // read the incoming byte:
-      for (uint8_t i=0; i<available; i++) 
-      {
-        incomingByte = Serial.read();
-      }
+      handle_serial_input(available);
 
       //send the current sensor info and the length of time that the button was pressed
+      Serial.print(button_time);
+      Serial.print(",");
+      Serial.println();
     }
-    else
+    else if (PWR_MODE == MODE_MANAGED)
     {
       missed_checkins++;
       if (missed_checkins > 50) //5 seconds of no serial means the pi may have crashed
@@ -101,7 +99,7 @@ void loop()
   if (PWR_MODE == MODE_SHUTDOWN)
   {
     //wait 30 seconds and then power off
-    if (button_time > 30000)
+    if (now - timeout_timer > 30000)
     {
       PWR_MODE = MODE_OFF;
       Serial.println("Mode switch: SHUTDOWN -> OFF");
@@ -122,20 +120,26 @@ void loop()
       Serial.println("Mode switch: BUTTON -> OFF"); //the user can hold the button to force the system off
     }
   }
-  // send data only when you receive data:
-  // int available = Serial.available();
-  // if (available > 0) {
-  //   // read the incoming byte:
-  //   for (int i=0; i<available; i++) {
-  //     incomingByte = Serial.read();
-  //     if (incomingByte == '0') {
-  //       state_5v = LOW;
-  //     } else if (incomingByte =='1') {
-  //       state_5v = HIGH;
-  //     }
-  //   }
-  //   digitalWrite(pin5vEnable, state_5v);   // turn the LED on (HIGH is the voltage level)
-  //   Serial.println(state_5v);
-  // }
   delay(100);
+}
+
+void handle_serial_input(uint32_t available)
+{
+  uint8_t incomingByte;
+  // read the incoming byte:
+  for (uint8_t i=0; i<available; i++)
+  {
+    incomingByte = Serial.read();
+    // 1 - regular update
+    // 2 - swap to unmanaged mode
+    // 3 - swap to managed mode
+    // 4 - swap to shutdown mode
+    switch (incomingByte)
+    {
+      case 2: PWR_MODE = MODE_UNMANAGED; Serial.println("Mode switch: UNMANAGED"); break;
+      case 3: PWR_MODE = MODE_MANAGED; Serial.println("Mode switch: MANAGED"); break;
+      case 4: PWR_MODE = MODE_SHUTDOWN; timeout_timer = millis(); Serial.println("Mode switch: SHUTDOWN"); break;
+      default: break;
+    }
+  }
 }
