@@ -6,7 +6,7 @@ from datetime import datetime
 import vlc
 
 class music_controller(object):
-    music_directory = '/home/pi/Music'
+    music_directory = '~/Music'
     playlist = []
     regular_playlist = []
     shuffled_playlist = []
