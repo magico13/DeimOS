@@ -6,7 +6,7 @@ from datetime import datetime
 import vlc
 
 class music_controller(object):
-    music_directory = '/home/magico13/Music'
+    music_directory = '/home/pi/Music'
     playlist = []
     regular_playlist = []
     shuffled_playlist = []
@@ -38,7 +38,6 @@ class music_controller(object):
             if (datetime.utcnow() - self.last_update).total_seconds() > 1:
                 self.skip_forward()
                 return True
-            self.last_update = datetime.utcnow()
         return False
 
     def set_current_index(self, index, load = True):
@@ -61,7 +60,7 @@ class music_controller(object):
     def play(self, index=None):
         '''Plays the song at the index or unpauses the music.'''
         if len(self.playlist) == 0: self.load_library()
-        if not index: index = self.current_index
+        if index == None: index = self.current_index
         if (not self.playing and index == self.current_index and self.player.get_state() == vlc.State.Paused): #paused
             self.player.set_pause(0)
         else: #stopped or different song
@@ -69,6 +68,7 @@ class music_controller(object):
             if index < 0: return False
             self.player.play()
         self.playing = True
+        self.last_update = datetime.utcnow()
         return True
 
     def stop(self):
@@ -127,6 +127,7 @@ class music_controller(object):
     def load_library(self, directory=None):
         '''Loads the music contained in "directory" and any subfolders.'''
         if not directory: directory = self.music_directory
+        self.music_directory = directory
 
         print('Loading music from '+directory)
         self.playlist = []
@@ -146,6 +147,8 @@ class music_controller(object):
             self.regular_playlist = self.playlist
             if (self.shuffled): self.shuffle_task()
         self.save_playlist()
+        self.stop()
+        self.play(0)
 
     def save_playlist(self):
         '''Save the playlist to a file'''
@@ -219,8 +222,16 @@ class music_controller(object):
         '''Returns a "pretty" name for an mp3, stripping off extra characters when possible.'''
         if not index: index = self.current_index
         if (index >= len(self.playlist) or index < 0): return 'N/A'
-        pretty = os.path.basename(self.playlist[index][:-4])
-        if '- ' in pretty:
-            pretty = pretty.rsplit('- ', 1)[1].strip() #turn "02 - filename" into "filename"
+        pretty = None
+        if index == self.current_index:
+            #should have this loaded, can get the name from vlc
+            media = self.player.get_media()
+            if media:
+                media.parse()
+                pretty = media.get_meta(0)
+        if not pretty: #either not the current song or couldn't parse it
+            pretty = os.path.basename(self.playlist[index][:-4])
+            if '- ' in pretty:
+                pretty = pretty.rsplit('- ', 1)[1].strip() #turn "02 - filename" into "filename"
         if len(pretty) > max_characters: pretty = pretty[:max_characters]+'...'
         return pretty

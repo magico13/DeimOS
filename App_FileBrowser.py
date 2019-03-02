@@ -7,43 +7,61 @@ import os
 import filebrowser_helper
 
 class App_FileBrowser(App):
-  def __init__(self):
-    super(App_FileBrowser, self).__init__()
-    self.dir = '/home/pi'
-    self.dirty = False
-    filebrowser_helper.ShowHidden(False)
-    filebrowser_helper.ShowFiles(False)
-    self.page = 0
-    self.Buttons, self.Texts = utils.load(self, 'App_FileBrowser.json')
-    
-  def __init__(self, path):
+  def __init__(self, path='/home/pi'):
     super(App_FileBrowser, self).__init__()
     self.dir = path
-    self.dirty = False
+    self.dirty = True
     filebrowser_helper.ShowHidden(False)
     filebrowser_helper.ShowFiles(False)
     self.page = 0
     self.Buttons, self.Texts = utils.load(self, 'App_FileBrowser.json')
+    print('init '+path)
 
   def FirstDraw(self, screen):
-    #Add buttons
-    self.DrawDefaultButtons(screen)
-
-    #Add texts
-    self.GetTxtByID('txtPath').SetText(self.dir)
-
     #Draw the background
-    background = pygame.Surface(screen.get_size())
-    background.fill((0, 0, 0))
-    screen.blit(background, (0, 0))
+    size = screen.get_size()
+    self.DrawBackground(screen)
+
+    txt = self.dir
+    if len(txt) > 60:
+      txt = txt[-60:]
+      txt = '...'+txt
+    self.GetTxtByID('txtPath').SetText(txt)
+    
+    column = 0
+    maxColumn = 2
+    row = 0
+    maxRow = 8
+    self.DrawDefaultButtons(screen)
+    if (os.path.isdir(self.dir)):
+      dirs = filebrowser_helper.ListDirectory(self.dir)
+      self.GetButtonByID('btnPPlus').SetVisible(len(dirs) > maxRow*maxColumn*(self.page+1))
+      for i in range(self.page*maxRow*maxColumn, min(len(dirs), maxRow*maxColumn*(self.page+1))):
+        d = dirs[i]
+        color = COLORS.WHITE
+        isFile = False
+        if (not os.path.isdir(self.dir+'/'+d)): 
+          isFile = True
+          color = COLORS.YELLOW
+        if (d.startswith('.')):
+          color = COLORS.BLUE
+          if isFile: color = COLORS.CYAN
+        self.Buttons.append(utils.Button(d, (column*((size[0]-100)/maxColumn)+50, row*38+76), ((size[0]-100)/maxColumn, 38), None, ((d[:25] + '..') if len(d) > 27 else d), color, self.PathButtonSelected, 38))
+        row += 1
+        if (row % maxRow == 0):
+          row = 0
+          column += 1
+        if column > maxColumn: break
 
     super(App_FileBrowser, self).FirstDraw(screen)
-    self.dirty = True
+    print('1st draw')
 
   def Select(self, btnID):
     filebrowser_helper.SetPath(self.dir)
     print('Selected '+self.dir)
-    return
+
+  def Cancel(self, btnID):
+    filebrowser_helper.SetCancelled()
 
   def GoUp(self, btnID):
     if (self.dir != '/'):
@@ -72,52 +90,12 @@ class App_FileBrowser(App):
       if (self.page < 0): self.page = 0
 
   def Draw(self, screen):
-    super(App_FileBrowser, self).Draw(screen)
+    worked = super(App_FileBrowser, self).Draw(screen)
     if self.dirty:
+      self.FirstDraw(screen)
       self.dirty = False
-      size = screen.get_size()
-      background = pygame.Surface(size)
-      background.fill((0, 0, 0))
-      screen.blit(background, (0, 0))
-
-      txt = self.dir
-      if len(txt) > 60:
-        txt = txt[-60:]
-        txt = '...'+txt
-      self.GetTxtByID('txtPath').SetText(txt)
-      
-      column = 0
-      maxColumn = 2
-      row = 0
-      maxRow = 8
-      self.DrawDefaultButtons(screen)
-      #for d in os.listdir(self.dir):
-        #if (not d.startswith('.') and os.path.isdir(self.dir+'/'+d )):
-      if (os.path.isdir(self.dir)):
-        dirs = filebrowser_helper.ListDirectory(self.dir)
-        self.GetButtonByID('btnPPlus').SetVisible(len(dirs) > maxRow*maxColumn*(self.page+1))
-        for i in range(self.page*maxRow*maxColumn, min(len(dirs), maxRow*maxColumn*(self.page+1))):
-        #for d in filebrowser_helper.ListDirectory(self.dir):
-          d = dirs[i]
-          color = COLORS.WHITE
-          isFile = False
-          if (not os.path.isdir(self.dir+'/'+d)): 
-            isFile = True
-            color = COLORS.YELLOW
-          if (d.startswith('.')):
-            color = COLORS.BLUE
-            if isFile: color = COLORS.CYAN
-          self.Buttons.append(utils.Button(d, (column*((size[0]-100)/maxColumn)+50, row*38+76), ((size[0]-100)/maxColumn, 38), None, ((d[:25] + '..') if len(d) > 27 else d), color, self.PathButtonSelected, 38))
-          row += 1
-          if (row % maxRow == 0):
-            row = 0
-            column += 1
-          if column > maxColumn: break
-            
-      for btn in self.Buttons:
-        btn.Draw(screen)
-      for txt in self.Texts:
-        txt.Draw(screen)
+      worked = True
+    return worked
           
   def DrawDefaultButtons(self, screen):
     self.Buttons, _ = utils.load(self, 'App_FileBrowser.json')
@@ -144,8 +122,9 @@ if __name__=="__main__":
   #os.environ["SDL_VIDEODRIVER"] = "fbcon"
 
   pygame.init()
+  pygame.mixer.quit()
   screen = pygame.display.set_mode((800, 480), 0, 32)
-  app_fb = App_FileBrowser('/home/')
+  app_fb = App_FileBrowser('/home')
   app_fb.FirstDraw(screen)
   PyClock = pygame.time.Clock()
   while True:

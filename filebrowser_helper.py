@@ -4,6 +4,7 @@ selectedPath = ''
 showHidden = False
 showFiles = False
 completed = False
+cancelled = False
 
 def SetPath(path, complete = True):
   global selectedPath
@@ -12,6 +13,12 @@ def SetPath(path, complete = True):
     global completed
     completed = True
   
+def SetCancelled():
+  global completed
+  global cancelled
+  completed = True
+  cancelled = True
+
 def GetPath():
   return selectedPath
   
@@ -31,10 +38,13 @@ def ViewFiles():
   
 def GetCompleted(reset = True):
   global completed
+  global cancelled
   result = completed
+  cancel = cancelled
   if (completed and reset):
     completed = False
-  return result
+    cancelled = False
+  return result, cancel
     
   
 def ListDirectoryFull(path, files=False, hidden=False):

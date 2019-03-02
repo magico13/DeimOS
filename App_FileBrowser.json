@@ -12,7 +12,7 @@
       "callback": "Select", 
       "position": [
         450, 
-        390
+        430
       ], 
       "textColor": [
         0, 
@@ -60,7 +60,7 @@
       "callback": "ToggleHidden", 
       "position": [
         10, 
-        390
+        430
       ], 
       "textColor": [
         255, 
@@ -84,7 +84,7 @@
       "callback": "ToggleFiles", 
       "position": [
         690, 
-        390
+        430
       ], 
       "textColor": [
         0, 
@@ -153,10 +153,10 @@
         0
       ], 
       "text": "Cancel", 
-      "callback": "None", 
+      "callback": "Cancel", 
       "position": [
         250, 
-        390
+        430
       ], 
       "textColor": [
         0, 

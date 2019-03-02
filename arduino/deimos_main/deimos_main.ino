@@ -1,4 +1,5 @@
-//int incomingByte = 0;
+#include <EEPROM.h>
+
 uint8_t PWR_MODE = 0; //0-Off, 1-Startup, 2-Managed, 3-Unmanaged, 4-Shutdown
 
 uint32_t ms_pressed = 0;
@@ -25,6 +26,9 @@ void setup()
   pinMode(PIN_USER, INPUT_PULLUP);
   pinMode(PIN_5V, OUTPUT);
   pinMode(PIN_LED, OUTPUT);
+  PWR_MODE = get_state_from_eeprom();
+  digitalWrite(PIN_5V, (PWR_MODE != MODE_OFF));
+  digitalWrite(PIN_LED, (PWR_MODE != MODE_OFF));
   Serial.begin(115200);
 }
 
@@ -80,8 +84,9 @@ void loop()
       handle_serial_input(available);
 
       //send the current sensor info and the length of time that the button was pressed
-      Serial.print(button_time);
+      Serial.print(PWR_MODE);
       Serial.print(",");
+      Serial.print(button_time);
       Serial.println();
     }
     else if (PWR_MODE == MODE_MANAGED)
@@ -120,7 +125,18 @@ void loop()
       Serial.println("Mode switch: BUTTON -> OFF"); //the user can hold the button to force the system off
     }
   }
+  update_state_in_eeprom(PWR_MODE);
   delay(100);
+}
+
+void update_state_in_eeprom(uint8_t state)
+{
+  EEPROM.update(0, state);
+}
+
+uint8_t get_state_from_eeprom()
+{
+  return EEPROM.read(0);
 }
 
 void handle_serial_input(uint32_t available)

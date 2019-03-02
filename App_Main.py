@@ -16,7 +16,6 @@ class App_Main(App):
         super(App_Main, self).__init__()
         self.Buttons, self.Texts = utils.load(self, 'App_Main.json')
         self.music = music_controller.music_controller()
-        #self.music.load_playlist('/home/magico13/Music')
         self.update_music_title()
         self.GetTxtByID('txtVolume').SetText('Volume: {}%'.format(self.music.volume))
         self.GetTxtByID('txtClock').SetText(self.time.strftime('%H:%M'))
@@ -76,14 +75,19 @@ class App_Main(App):
         if not self.arduino: return
         if self.write:
             self.arduino_write_int(1)
+        if not self.arduino: return
         msg = self.arduino.readline().strip()
-        if msg and msg != b'0,':
+        if msg and b',0' not in msg:
             print('Msg: {}'.format(msg))
 
     def arduino_write_int(self, value):
         if not self.arduino: return
-        self.arduino.write(bytes([value]))
-        self.arduino.flush()
+        try:
+            self.arduino.write(bytes([value]))
+            self.arduino.flush()
+        except:
+            print('Failed to write to arduino')
+            self.arduino = None
 
     def musicPanel(self, btnID):
         if not self.active_panel:
