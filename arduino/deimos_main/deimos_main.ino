@@ -27,7 +27,7 @@ void setup()
   pinMode(PIN_5V, OUTPUT);
   pinMode(PIN_LED, OUTPUT);
   PWR_MODE = get_state_from_eeprom();
-  digitalWrite(PIN_5V, (PWR_MODE != MODE_OFF));
+  digitalWrite(PIN_5V, (PWR_MODE == MODE_OFF));
   digitalWrite(PIN_LED, (PWR_MODE != MODE_OFF));
   Serial.begin(115200);
 }
@@ -48,7 +48,7 @@ void loop()
 
   if (PWR_MODE == MODE_OFF) //5v is off, not sending data to pi
   {
-    digitalWrite(PIN_5V, LOW);
+    digitalWrite(PIN_5V, HIGH); //high is off
     //if the button is pressed for more than half a second, switch to Startup
     if (!digitalRead(PIN_USER) && ms_pressed == 0) //reads HIGH when not pressed (pullup)
     {
@@ -58,7 +58,7 @@ void loop()
     {
       PWR_MODE = MODE_START; //swap to start mode //temporarily swapping to Unmanaged mode
       timeout_timer = now;
-      digitalWrite(PIN_5V, HIGH);
+      digitalWrite(PIN_5V, LOW);
       Serial.println("Mode switch: OFF -> START");
     }
   }
