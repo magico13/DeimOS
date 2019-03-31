@@ -8,6 +8,7 @@ from utils import COLORS
 
 import pygame, sys, os, time
 from datetime import datetime
+import signal
 
 TOUCH = True
 TOUCHSCREEN = None
@@ -85,14 +86,25 @@ class CORE:
         self.touches.append(touch)
         pygame.mouse.set_pos(touch.x, touch.y)
         
+# to catch SIGHUP for systemd
+def handler(signum, frame):
+    pass
+
 ##main
 if __name__ == "__main__":
+    try:
+        signal.signal(signal.SIGHUP, handler)
+    except AttributeError:
+        # Windows compatibility
+        pass
+
     if TOUCH:
         from ft5406 import Touchscreen
         TOUCHSCREEN = Touchscreen()
 
-    pygame.init()
-    pygame.mixer.quit()
+    pygame.display.init()
+    pygame.font.init()
+
     pygame.mouse.set_visible(not TOUCH) #no cursor if using touch controls
     
     Core = CORE()

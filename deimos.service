@@ -1,0 +1,11 @@
+[Unit]
+Description=DeimOS infotainment app
+After=multi-user.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/bin/bash /home/pi/deimos/start.sh
+
+[Install]
+WantedBy=multi-user.target
