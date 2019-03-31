@@ -32,10 +32,14 @@ class App(object):
       button.Check(mousePos)
     return
     
-  def EventLoop(self, events):
-    for event in events:
-      if event.type == pygame.MOUSEBUTTONDOWN:
-        self.MouseClick(pygame.mouse.get_pos())
+  def EventLoop(self, events, touches):
+    if not touches or len(touches) == 0:
+      for event in events:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+          self.MouseClick(pygame.mouse.get_pos())
+    else:
+      for touch in touches:
+        self.MouseClick((touch.x, touch.y))
     return
     
   def BackgroundEventLoop(self, events):

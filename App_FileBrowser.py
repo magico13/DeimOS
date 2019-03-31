@@ -112,8 +112,8 @@ class App_FileBrowser(App):
     self.dirty = True
     self.page = 0
   
-  def EventLoop(self, events):
-    super(App_FileBrowser, self).EventLoop(events)
+  def EventLoop(self, events, touches):
+    super(App_FileBrowser, self).EventLoop(events, touches)
 
 if __name__=="__main__":
   #os.environ["SDL_FBDEV"] = "/dev/fb1"
@@ -128,7 +128,7 @@ if __name__=="__main__":
   app_fb.FirstDraw(screen)
   PyClock = pygame.time.Clock()
   while True:
-    app_fb.EventLoop(pygame.event.get())
+    app_fb.EventLoop(pygame.event.get(), None)
     app_fb.Draw(screen)
     pygame.display.update()
     PyClock.tick(5)

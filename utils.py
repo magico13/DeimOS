@@ -45,14 +45,7 @@ class Button(object):
     def Clicked(self, mousePos): #this one requires you to pass the mouse coordinates
         if not self.VISIBLE: return False
         return pygame.Rect(self.POS, self.SIZE).collidepoint(mousePos)
-        
-    def Clicked_Self(self): #this one checks the mouse by itself
-        if not self.VISIBLE: return False
-        mouseState = pygame.mouse.get_pressed()
-        if not mouseState[0]: return False #check that the mouse is clicked
-        #check the coordinates
-        return pygame.Rect(self.POS, self.SIZE).collidepoint(pygame.mouse.get_pos())
-        
+
     def SetVisible(self, vis):
         self.VISIBLE = vis
         self.updated = True
@@ -128,9 +121,7 @@ class Text(object):
         
     def Clicked(self, mousePos): #this one requires you to pass the mouse coordinates
         if not self.VISIBLE: return False
-        self.FONT = pygame.font.Font(None, self.HT)
-        text = self.FONT.render(self.TXT, 1, self.COLOR)
-        textPos = text.get_rect(left=self.POS[0], top=self.POS[1])
+        textPos = self.GetRect()
         return textPos.collidepoint(mousePos)
         
     def GetRect(self):

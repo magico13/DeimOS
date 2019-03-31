@@ -58,19 +58,27 @@ class Panel_Music(App):
 			worked |= text.updated
 		return worked
 
-	def EventLoop(self, events):
+	def EventLoop(self, events, touches):
 		if self.file_browser:
-			self.file_browser.EventLoop(events)
+			self.file_browser.EventLoop(events, touches)
 			return
-		for event in events:
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				pos = pygame.mouse.get_pos()
-				if not pygame.Rect(self.LEFT, self.TOP, self.WIDTH, self.HEIGHT).collidepoint(pos):
-					self.should_close = True
-				else:
-					#adjust the mouse position to be relative to the top left of the panel
-					newPos = (pos[0] - self.LEFT, pos[1] - self.TOP)
-					self.MouseClick(newPos)
+		if not touches or len(touches) == 0:
+			for event in events:
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					pos = pygame.mouse.get_pos()
+					self.transform_click(pos)
+		else:
+			for touch in touches:
+				self.transform_click((touch.x, touch.y))
+			
+
+	def transform_click(self, pos):
+		if not pygame.Rect(self.LEFT, self.TOP, self.WIDTH, self.HEIGHT).collidepoint(pos):
+			self.should_close = True
+		else:
+			#adjust the mouse position to be relative to the top left of the panel
+			newPos = (pos[0] - self.LEFT, pos[1] - self.TOP)
+			self.MouseClick(newPos)
 
 	def musicPrevious(self, btnID):
 		print('musicPrevious - {}'.format(btnID))

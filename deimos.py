@@ -9,6 +9,9 @@ from utils import COLORS
 import pygame, sys, os, time
 from datetime import datetime
 
+TOUCH = True
+TOUCHSCREEN = None
+
 class CORE:
     Run = True
     ActiveApp = None
@@ -18,11 +21,19 @@ class CORE:
     BarTextSize = 36
     Width = 800
     Height = 480
+    touches = []
+
     def __init__(self):
+        if TOUCH and TOUCHSCREEN:
+            for touch in TOUCHSCREEN.touches:
+                touch.on_press = self.TOUCH_HANDLER
+            TOUCHSCREEN.run()
+        
         pygame.display.set_caption('DeimOS')
         
         self.screen = pygame.display.set_mode((self.Width, self.Height), 0, 32)
         self.CREATE_DATA_DIR()
+
         
     def CREATE_DATA_DIR(self):
         try:
@@ -65,27 +76,31 @@ class CORE:
                 self.Run = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.Run = False
-                
-        self.ActiveApp.EventLoop(events)
+        self.ActiveApp.EventLoop(events, self.touches)
+        self.touches.clear()
         for _, app in self.BackgroundApps.items():
             app.BackgroundEventLoop(events)
         
+    def TOUCH_HANDLER(self, event, touch):
+        self.touches.append(touch)
+        pygame.mouse.set_pos(touch.x, touch.y)
         
 ##main
 if __name__ == "__main__":
-#    os.environ["SDL_FBDEV"] = "/dev/fb1"
-#    os.environ["SDL_MOUSEDRV"] = "TSLIB"
-#    os.environ["SDL_MOUSEDEV"] = "/dev/input/touchscreen"
-#    os.environ["SDL_VIDEODRIVER"] = "fbcon"
+    if TOUCH:
+        from ft5406 import Touchscreen
+        TOUCHSCREEN = Touchscreen()
 
     pygame.init()
     pygame.mixer.quit()
-    
-    pygame.mouse.set_visible(True)
+    pygame.mouse.set_visible(not TOUCH) #no cursor if using touch controls
     
     Core = CORE()
     Core.SET_APP("home", App_Main)
     while Core.Run:
         Core.EVENTLOOP()
         Core.DRAW()
+    #quitting
+    if TOUCHSCREEN:
+        TOUCHSCREEN.stop()
     pygame.quit()

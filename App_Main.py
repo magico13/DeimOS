@@ -36,7 +36,7 @@ class App_Main(App):
         
         super(App_Main, self).FirstDraw(screen)
 
-    def EventLoop(self, events):
+    def EventLoop(self, events, touches):
         if self.music.update(): self.update_music_title()
                 
         if (datetime.now().minute != self.time.minute):
@@ -46,9 +46,9 @@ class App_Main(App):
         self.manage_arduino()
 
         if not self.active_panel:
-            super(App_Main, self).EventLoop(events)
+            super(App_Main, self).EventLoop(events, touches)
         else:
-            self.active_panel.EventLoop(events)
+            self.active_panel.EventLoop(events, touches)
             if self.active_panel.should_close:
                 print('Closing music panel')
                 self.active_panel = None
