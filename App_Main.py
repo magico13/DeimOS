@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import serial
 import os
 
@@ -7,11 +7,13 @@ import utils
 from utils import COLORS
 import music_controller
 from Panel_Music import Panel_Music
+import gps_handler
 
 class App_Main(App):
     time = datetime.now()
     active_panel = None
     write = True
+    cached_speed = 0
 
     def __init__(self):
         super(App_Main, self).__init__()
@@ -40,10 +42,13 @@ class App_Main(App):
     def EventLoop(self, events, touches):
         if self.music.update(): self.update_music_title()
                 
-        if (datetime.now().minute != self.time.minute):
-            self.time = datetime.now()
+        if (gps_handler.get_time().minute != self.time.minute):
+            self.time = gps_handler.get_time().replace(tzinfo=timezone.utc).astimezone(tz=None)
             self.GetTxtByID('txtClock').SetText(self.time.strftime('%H:%M'))
-        
+        speed = gps_handler.get_speed()
+        if speed > 1 and speed != self.cached_speed:
+            self.GetTxtByID('txtSpeed').SetText(f'{speed:.0f}')
+            self.cached_speed = speed
         self.manage_arduino()
 
         if not self.active_panel:
