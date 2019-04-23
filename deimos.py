@@ -9,6 +9,7 @@ from utils import COLORS
 import pygame, sys, os, time
 from datetime import datetime
 import signal
+import gps_handler
 
 TOUCH = True
 TOUCHSCREEN = None
@@ -107,6 +108,9 @@ if __name__ == "__main__":
 
     pygame.mouse.set_visible(not TOUCH) #no cursor if using touch controls
     
+    gps_handler.initialize()
+    gps_handler.start_loop_thread()
+
     Core = CORE()
     Core.SET_APP("home", App_Main)
     while Core.Run:
