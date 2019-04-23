@@ -46,8 +46,9 @@ class App_Main(App):
             self.time = gps_handler.get_time().replace(tzinfo=timezone.utc).astimezone(tz=None)
             self.GetTxtByID('txtClock').SetText(self.time.strftime('%H:%M'))
         speed = gps_handler.get_speed()
-        if speed > 1 and speed != self.cached_speed:
-            self.GetTxtByID('txtSpeed').SetText('{:.0f}'.format(speed))
+        if speed < 1: speed = 0
+        if speed != self.cached_speed:
+            self.GetTxtByID('txtSpeed').SetText('{:.0f} MPH'.format(speed))
             self.cached_speed = speed
         self.manage_arduino()
 
